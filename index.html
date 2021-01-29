@@ -19,16 +19,21 @@
       --color-dark-blue-100: hsl(236, 21%, 26%);
       --color-dark-blue-200: hsl(235, 16%, 14%);
       --color-dark-blue-300: hsl(234, 17%, 12%);
+      --box-timer-width:  250px;
+      --box-timer-height: 280px;
+      --timer-font-size:70px;
+      --timer-text-position:calc( var(--timer-font-size) - 5px);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html,body {
+      
       margin: 0;
       padding: 0;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       font-size: 14px;
       font-family: "Red Hat Text";
@@ -45,25 +50,32 @@
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
     }
 
     .page__content {
       display: flex;
       flex-direction: column;
-      margin: auto;
-
-      width: 57vw;
+      align-items: center;
+      width: 100%;
       height: 100%;
       z-index: 1;
 
     }
 
+    .page__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10%;
+      flex-grow: 1;
+    }
+
     .pattern__hill {
       position: absolute;
-      bottom: 0;
       width: 100%;
+      bottom: 0;
     }
 
     .title {
@@ -71,18 +83,13 @@
       text-transform: uppercase;
       word-spacing: 2px;
       letter-spacing: 10px;
-      margin: 0 auto;
-      margin-top: 20%;
     }
 
     .timer__box {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      min-width: 80%;
-      justify-content: space-between;
-      margin: 75px auto;
-
+      margin-top: 75px;
     }
 
 
@@ -92,50 +99,34 @@
       background: transparent;
       align-items: center;
       border-radius: 15px;
-
-      height: 180px;
-      width: 150px;
       overflow: hidden;
+      margin: 10px;
+      width: var(--box-timer-width);
+      height: var(--box-timer-height);
+
     }
 
-    .splitter {
-      position: absolute;
-      width: 155px;
-      height: 10px;
-      top: 58px;
-      overflow: hidden;
-    }
-
-    .splitter .divider {
-      width: 10px;
-      height: 10px;
-      background-color: var(--color-dark-blue-300);
-      border-radius: 50%;
-      position: absolute;
-    }
-
-    .splitter .divider.left {
-      left: 0;
-    }
-
-    .splitter .divider.right {
-      right: 0;
-    }
 
     .number__container {
       background-color: var(--color-dark-blue-300);
       color: var(--color-secondary);
       position: relative;
-      font-size: 70px;
-      width: 100%;
-      height: 130px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-size: var(--timer-font-size);
       border-radius: 15px;
-      padding-bottom: 15px;
-
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 20px;
+      padding: 1px 10px 5px 0;
     }
+
+    .seconds__container {}
+
+    .minutes__container {}
+
+    .hours_container {}
+
+    .days__container {}
 
     .number__layers {
       position: relative;
@@ -143,53 +134,97 @@
       flex-direction: column;
       width: 100%;
       height: 100%;
+      overflow: hidden;
+      background-color: var(--color-dark-blue-100);
+      border-radius: 20px;
     }
 
     .number__layer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      overflow: hidden;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
-    }
+      display: flex;
+      flex-direction: column;
 
-    .flipper {
-      height: 56%;
-      width: 100%;
-      position: absolute;
-      background-color: var(--color-dark-blue-100);
-
-    }
-
-    .flipper.upper {
-      top: 0;
-      left: 0;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-
-    .flipper.bottom {
-      bottom: 0;
-      left: 0;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-    }
-
-    .flipper.upper-shadow {
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.3);
-      z-index: 1;
-    }
-
-    .time {
+      display: block;
+      overflow: hidden;
       position: relative;
+
     }
+
+    .number__layer .layer {
+      left: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: var(--color-dark-blue-100);
+      overflow: hidden;
+      display: block;
+      border: 1px solid black;
+      transform: rotate3d(1, 0, 0, 10deg);
+    }
+
+    .number__layer .layer.flipAnimation {
+      z-index: 1;
+
+
+    }
+
+
+    .number__layer .layer .time {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Upper Layer */
+    .number__layer.upper {
+      top: 0;
+      filter: grayscale(.2);
+    }
+
+    .number__layer.upper .layer {
+      transform-origin: bottom;
+
+    }
+
+    .number__layer.upper .layer .time {
+      top: var(--timer-text-position);
+
+    }
+
+    .number__layer.upper .layer.flipAnimation {
+
+      animation: 500ms linear flip;
+    }
+
+    /* End Upper Layer */
+    /* Bottom Layer */
+
+    .number__layer.bottom {
+      bottom: 0;
+
+    }
+
+    .number__layer.bottom .layer {
+      transform-origin: top;
+
+    }
+
+    .number__layer.bottom .layer.flipAnimation {
+      animation: 500ms linear flipBottom;
+
+    }
+
+
+    .number__layer.bottom .layer .time {
+      bottom: var(--timer-text-position);
+    }
+
+
+
+    /* End Bottom Layer */
+
+
 
     .period__type {
       color: var(--color-primary);
@@ -200,14 +235,49 @@
       letter-spacing: 3px;
     }
 
+
+
+    /* Slitter */
+    .splitter {
+
+      width: 100%;
+      background-color: transparent;
+      height: 20px;
+      position: absolute;
+      top: 45%;
+      z-index: 10;
+    }
+
+    .splitter .divider {
+      width: 20px;
+      height: 20px;
+      background-color: var(--color-dark-blue-300);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .splitter .divider.left {
+      float: left;
+      margin-left: -10px;
+    }
+
+    .splitter .divider.right {
+      float: right;
+
+    }
+
+    /* End Splitter */
+
+
+
+
     .social__media {
       display: flex;
-      flex-direction: row;
-      justify-content: center;
-      position: absolute;
-      bottom: 60px;
-      align-self: center;
-
+      flex-direction: column-reverse;
+      align-items: center;
+      width: 100%;
+      flex-grow: 1;
+      padding-bottom: 10px;
     }
 
     .social__media__links {
@@ -218,17 +288,39 @@
       margin: 0;
       justify-content: space-between;
       width: 140px;
+
     }
 
-    .flipping__animate {
-       animation: 2s linear flipping;
-    }
-    @keyframes flipping{
-      from{
-        height:0%
+
+
+
+
+    @keyframes flip {
+      from {
+        transform: rotate3d(1, 0, 0, 10deg);
       }
-      to{
-        height: 50%;
+
+      to {
+        transform: rotate3d(1, 0, 0, 90deg);
+      }
+    }
+
+    @keyframes flipBottom {
+      from {
+        transform: rotate3d(1, 0, 0, 90deg);
+      }
+
+      to {
+        transform: rotate3d(1, 0, 0, 10deg);
+      }
+    }
+
+    @media only screen and (max-width:700px) {
+      :root {
+        --box-timer-width: 100px;
+        --box-timer-height: 280px;
+        --timer-font-size:40px;
+        --timer-text-position:calc(var(--timer-font-size)* 2.1);
       }
     }
   </style>
@@ -237,95 +329,141 @@
 <body>
   <div class="page">
     <div class="page__content">
-      <h2 class="title">we're launching soon</h1>
-        <div class="timer__box">
-          <span class="timer__period___box">
-            <div class="number__container">
-              <span class="number__layers">
-                <span class="number__layer">
-                  <span class="flipper upper"></span>
-                  <span class="flipper upper-shadow"></span>
-                  <span class="flipper bottom"></span>
-
-                  <span data-days class="time">1</span>
+      <div class="page__body">
+        <h2 class="title">we're launching soon</h1>
+          <div class="timer__box">
+            <!-- Days -->
+            <span class="timer__period___box days__container">
+              <div class="number__container ">
+                <span class="splitter">
+                  <span class="divider left"></span>
+                  <span class="divider right"></span>
                 </span>
-              </span>
-              <span class="splitter">
-                <span class="divider left"></span>
-                <span class="divider right"></span>
-              </span>
-            </div>
-
-            <p class="period__type">days</p>
-          </span>
-          <!-- Hours -->
-          <span class="timer__period___box">
-            <div class="number__container">
-              <span class="number__layers">
-                <span class="number__layer">
-                  <span class="flipper upper"></span>
-                  <span class="flipper upper-shadow"></span>
-                  <span class="flipper bottom"></span>
-
-                  <span data-hours class="time">1</span>
+                <span class="number__layers">
+                  <span class="number__layer upper">
+                    <span class="layer ">
+                      <span class="time">0</span>
+                    </span>
+                    <span data-flipper class="layer flipAnimation">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                  <span class="number__layer bottom">
+                    <span class="layer">
+                      <span class="time ">0</span>
+                    </span>
+                    <span data-flipper class="layer">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
                 </span>
-              </span>
-              <span class="splitter">
-                <span class="divider left"></span>
-                <span class="divider right"></span>
-              </span>
-            </div>
 
-            <p class="period__type">hours</p>
-          </span>
-          <!-- Minutes -->
-          <span class="timer__period___box">
-            <div class="number__container">
-              <span class="number__layers">
-                <span class="number__layer">
-                  <span class="flipper upper"></span>
-                  <span class="flipper upper-shadow"></span>
-                  <span class="flipper bottom"></span>
+              </div>
 
-                  <span data-minutes class="time">1</span>
+              <p class="period__type">days</p>
+            </span>
+            <!-- Hours -->
+            <span class="timer__period___box hours__container">
+              <div class="number__container ">
+                <span class="splitter">
+                  <span class="divider left"></span>
+                  <span class="divider right"></span>
                 </span>
-              </span>
-              <span class="splitter">
-                <span class="divider left"></span>
-                <span class="divider right"></span>
-              </span>
-            </div>
-
-            <p class="period__type">minutes</p>
-          </span>
-          <!-- Seconds -->
-          <span class="timer__period___box">
-            <div class="number__container">
-              <span class="number__layers">
-                <span class="number__layer ">
-                  <span class="flipper upper "></span>
-                  <span class="flipper upper-shadow "></span>
-                  <span class="flipper bottom "></span>
-
-                  <span data-seconds class="time">0</span>
+                <span class="number__layers">
+                  <span class="number__layer upper">
+                    <span class="layer ">
+                      <span class="time">0</span>
+                    </span>
+                    <span data-flipper class="layer flipAnimation">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                  <span class="number__layer bottom">
+                    <span class="layer">
+                      <span class="time ">0</span>
+                    </span>
+                    <span data-flipper class="layer">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
                 </span>
-              </span>
-              <span class="splitter">
-                <span class="divider left"></span>
-                <span class="divider right"></span>
-              </span>
-            </div>
 
-            <p class="period__type">seconds</p>
-          </span>
-        </div>
-        <div class="social__media">
-          <ul class="social__media__links">
-            <li class="social__media__link"><a href=""><img src="./images/icon-facebook.svg" alt=""></a></li>
-            <li class="social__media__link"><a href=""><img src="./images/icon-pinterest.svg" alt=""></a></li>
-            <li class="social__media__link"><a href=""><img src="./images/icon-instagram.svg" alt=""></a></li>
-          </ul>
-        </div>
+              </div>
+
+              <p class="period__type">hours</p>
+            </span>
+            <!-- Minutes -->
+            <span class="timer__period___box minutes__container">
+              <div class="number__container ">
+                <span class="splitter">
+                  <span class="divider left"></span>
+                  <span class="divider right"></span>
+                </span>
+                <span class="number__layers">
+                  <span class="number__layer upper">
+                    <span class="layer ">
+                      <span class="time">0</span>
+                    </span>
+                    <span data-flipper class="layer flipAnimation">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                  <span class="number__layer bottom">
+                    <span class="layer">
+                      <span class="time ">0</span>
+                    </span>
+                    <span data-flipper class="layer">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                </span>
+
+              </div>
+
+              <p class="period__type">minutes</p>
+            </span>
+            <!-- Seconds -->
+            <span class="timer__period___box seconds__container">
+              <div class="number__container ">
+                <span class="splitter">
+                  <span class="divider left"></span>
+                  <span class="divider right"></span>
+                </span>
+                <span class="number__layers">
+                  <span class="number__layer upper">
+                    <span class="layer ">
+                      <span class="time">0</span>
+                    </span>
+                    <span data-flipper class="layer flipAnimation">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                  <span class="number__layer bottom">
+                    <span class="layer">
+                      <span class="time ">0</span>
+                    </span>
+                    <span data-flipper class="layer">
+                      <span class="time">0</span>
+                    </span>
+                  </span>
+                </span>
+
+              </div>
+
+              <p class="period__type">seconds</p>
+            </span>
+
+
+
+          </div>
+          <div class="social__media">
+            <ul class="social__media__links">
+              <li class="social__media__link"><a href=""><img src="./images/icon-facebook.svg" alt=""></a></li>
+              <li class="social__media__link"><a href=""><img src="./images/icon-pinterest.svg" alt=""></a></li>
+              <li class="social__media__link"><a href=""><img src="./images/icon-instagram.svg" alt=""></a></li>
+            </ul>
+          </div>
+      </div>
     </div>
 
     <img src="images/pattern-hills.svg" class="pattern__hill">
@@ -334,20 +472,31 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
   <script>
-
-    // get current date in milliseconds [done]
-    // update values every second [done]
-    // bind values with elements 
-    // flip upper by animation then set new number
     class CountDown {
-      constructor() {
+      constructor(lunchingDate) {
         this._days = 0;
         this._hours = 0;
         this._minutes = 0;
         this._seconds = 0;
         this.currentDate = new Date();
-        this.lunchingDate = new Date(2022, 1, 1);
+        this.lunchingDate = lunchingDate;
         this.counter = null;
+        this._onSecondPassed = [];
+        this._onMinutePassed = [];
+        this._onHourPassed = [];
+        this._onDaysPassed = [];
+      }
+      set onSecond(callback) {
+        this._onSecondPassed.push(callback);
+      }
+      set onMinute(callback) {
+        this._onMinutePassed.push(callback);
+      }
+      set onHour(callback) {
+        this._onHourPassed.push(callback);
+      }
+      set onDay(callback) {
+        this._onDaysPassed.push(callback);
       }
       get days() {
         return Math.floor(this._days);
@@ -362,18 +511,128 @@
         return Math.floor(this._seconds);
       }
       start() {
-        // this.counter = setInterval(() => {
-        //   this.update();
-        // }, 1000);
+        this.renderTimerContainers();
+
+
+      }
+      renderTimerContainers() {
+        // render container 
+        /*
+          1- with every bottom animation ended trigger on second passed so can minutes track if seconds passed so 
+
+        */
+        this.renderDaysContainer();
+        this.renderHoursContainer();
+        this.renderMinutesContainer();
+        this.renderSecondsContainer();
+
+      }
+      renderSecondsContainer() {
+        const upperNumberLayer = $('.seconds__container .number__layer.upper .layer[data-flipper]');
+        const bottomNumberLayer = $('.seconds__container .number__layer.bottom .layer[data-flipper]');
+        $(upperNumberLayer).find('.time').text(this.seconds);
+        $(bottomNumberLayer).find('.time').text(this.seconds);
+        upperNumberLayer.on('animationstart', (evt) => {
+
+          this.updateTime();
+          $(evt.target).prev('span').find('.time').text(this.seconds);
+        });
+        upperNumberLayer.on('animationend', (evt) => {
+          $(evt.target).find('.time').text(this.seconds);
+          evt.target.classList.remove('flipAnimation');
+          bottomNumberLayer.addClass('flipAnimation');
+        });
+        bottomNumberLayer.on('animationstart', (evt) => {
+          $(evt.target).find('.time').text(this.seconds);
+        });
+        bottomNumberLayer.on('animationend', (evt) => {
+          $(evt.target).prev('span').find('.time').text(this.seconds);
+          evt.target.classList.remove('flipAnimation');
+          upperNumberLayer.addClass('flipAnimation');
+          this._onSecondPassed.forEach(callback => callback());
+        });
+      }
+      renderMinutesContainer() {
+        const upperNumberLayerMinutes = $('.minutes__container .number__layer.upper .layer[data-flipper]');
+        const bottomNumberLayerMinutes = $('.minutes__container .number__layer.bottom .layer[data-flipper]');
+        this.onSecond = () => {
+          if (this.seconds <= 0) upperNumberLayerMinutes.addClass('flipAnimation');
+        }
+        $(upperNumberLayerMinutes).find('.time').text(this.minutes);
+        $(bottomNumberLayerMinutes).find('.time').text(this.minutes);
+        upperNumberLayerMinutes.on('animationstart', (evt) => {
+          this.updateTime();
+          $(evt.target).prev('span').find('.time').text(this.minutes);
+        });
+        upperNumberLayerMinutes.on('animationend', (evt) => {
+          $(evt.target).find('.time').text(this.minutes);
+          evt.target.classList.remove('flipAnimation');
+          bottomNumberLayerMinutes.addClass('flipAnimation');
+        });
+        bottomNumberLayerMinutes.on('animationstart', (evt) => {
+          $(evt.target).find('.time').text(this.minutes);
+        });
+        bottomNumberLayerMinutes.on('animationend', (evt) => {
+          $(evt.target).prev('span').find('.time').text(this.minutes);
+          evt.target.classList.remove('flipAnimation');
+          this._onMinutePassed.forEach(callback => callback());
+        });
+      }
+      renderHoursContainer() {
+        const upperNumberLayerHours = $('.hours__container .number__layer.upper .layer[data-flipper]');
+        const bottomNumberLayerHours = $('.hours__container .number__layer.bottom .layer[data-flipper]');
+        this.onMinute = () => {
+          if (this.minutes < 0) upperNumberLayerHours.addClass('flipAnimation');
+        }
+        $(upperNumberLayerHours).find('.time').text(this.hours);
+        $(bottomNumberLayerHours).find('.time').text(this.hours);
+        upperNumberLayerHours.on('animationstart', (evt) => {
+          this.updateTime();
+          $(evt.target).prev('span').find('.time').text(this.hours);
+        });
+        upperNumberLayerHours.on('animationend', (evt) => {
+          $(evt.target).find('.time').text(this.hours);
+          evt.target.classList.remove('flipAnimation');
+          bottomNumberLayerHours.addClass('flipAnimation');
+        });
+        bottomNumberLayerHours.on('animationstart', (evt) => {
+          $(evt.target).find('.time').text(this.hours);
+        });
+        bottomNumberLayerHours.on('animationend', (evt) => {
+          $(evt.target).prev('span').find('.time').text(this.hours);
+          evt.target.classList.remove('flipAnimation');
+          this._onHourPassed.forEach(callback => callback());
+        });
+      }
+      renderDaysContainer() {
+        const upperNumberLayerDays = $('.days__container .number__layer.upper .layer[data-flipper]');
+        const bottomNumberLayerDays = $('.days__container .number__layer.bottom .layer[data-flipper]');
+        this.onHour = () => {
+          if (this.hours <= 0) upperNumberLayerDays.addClass('flipAnimation');
+        }
+        $(upperNumberLayerDays).find('.time').text(this.days);
+        $(bottomNumberLayerDays).find('.time').text(this.days);
+        upperNumberLayerDays.on('animationstart', (evt) => {
+          this.updateTime();
+          $(evt.target).prev('span').find('.time').text(this.days);
+        });
+        upperNumberLayerDays.on('animationend', (evt) => {
+          $(evt.target).find('.time').text(this.days);
+          evt.target.classList.remove('flipAnimation');
+          bottomNumberLayerDays.addClass('flipAnimation');
+        });
+        bottomNumberLayerDays.on('animationstart', (evt) => {
+          $(evt.target).find('.time').text(this.days);
+        });
+        bottomNumberLayerDays.on('animationend', (evt) => {
+          $(evt.target).prev('span').find('.time').text(this.days);
+          evt.target.classList.remove('flipAnimation');
+          this._onDaysPassed.forEach(callback => callback());
+        });
 
       }
       stop() {
         clearInterval(this.counter);
-      }
-      update() {
-        this.updateTime();
-        this.renderTime();
-        // this.logging();
       }
       updateTime() {
         this.currentDate = new Date();
@@ -385,12 +644,8 @@
 
 
       }
-      renderTime() {
-        this.renderDays(this.days);
-        this.renderHours(this.hours);
-        this.renderMinutes(this.minutes);
-        this.renderSeconds(this.seconds);
-      }
+
+
       getFullTime() {
         return `days:${this.days} hours:${this.hours} minuets:${this.minutes} seconds:${this.seconds}`;
       }
@@ -400,7 +655,6 @@
       }
 
       updateHours() {
-
         this._hours = (this._days % 1) * 24;
       }
       updateMinutes() {
@@ -409,25 +663,12 @@
       updateSeconds() {
         this._seconds = (this._minutes % 1) * 60;
       }
-      renderDays(days) {
-        console.log($('.days'));
-        $('span[data-days]').text(days);
-      }
-      renderHours(hours) {
-        $('span[data-hours]').text(hours);
-      }
-      renderMinutes(minutes) {
-        $('span[data-minutes]').text(minutes);
-      }
-      renderSeconds(seconds) {
-        $('span[data-seconds]').text(seconds);
-      }
       logging() {
         console.clear();
         console.log(this.getFullTime());
       }
     }
-    let countDown = new CountDown();
+    let countDown = new CountDown(new Date(2021, 1, 29, 14, 60, 0));
     countDown.start();
   </script>
 </body>
