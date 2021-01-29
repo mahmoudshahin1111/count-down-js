@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="count down timer made by eng mahmoud shahin he is  accept this challenge and win : )">
   <!-- displays site properly based on user's device -->
-  <title>Frontend Mentor | Launch countdown timer</title>
+  <title>Count Down Timer</title>
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text&display=swap" rel="stylesheet">
@@ -19,18 +21,19 @@
       --color-dark-blue-100: hsl(236, 21%, 26%);
       --color-dark-blue-200: hsl(235, 16%, 14%);
       --color-dark-blue-300: hsl(234, 17%, 12%);
-      --box-timer-width:  250px;
+      --box-timer-width: 250px;
       --box-timer-height: 280px;
-      --timer-font-size:70px;
-      --timer-text-position:calc( var(--timer-font-size) - 5px);
+      --timer-font-size: 70px;
+      --timer-text-position: calc(var(--timer-font-size) - 5px);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html,body {
-      
+    html,
+    body {
+
       margin: 0;
       padding: 0;
       width: 100%;
@@ -60,7 +63,7 @@
       align-items: center;
       width: 100%;
       height: 100%;
-      z-index: 1;
+
 
     }
 
@@ -112,7 +115,6 @@
       color: var(--color-secondary);
       position: relative;
       font-size: var(--timer-font-size);
-      border-radius: 15px;
       height: 100%;
       width: 100%;
       overflow: hidden;
@@ -144,8 +146,6 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-
-      display: block;
       overflow: hidden;
       position: relative;
 
@@ -319,8 +319,8 @@
       :root {
         --box-timer-width: 100px;
         --box-timer-height: 280px;
-        --timer-font-size:40px;
-        --timer-text-position:calc(var(--timer-font-size)* 2.1);
+        --timer-font-size: 40px;
+        --timer-text-position: calc(var(--timer-font-size)* 2.1);
       }
     }
   </style>
@@ -468,7 +468,7 @@
 
     <img src="images/pattern-hills.svg" class="pattern__hill">
   </div>
-  </div>
+
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
     crossorigin="anonymous"></script>
   <script>
@@ -480,24 +480,19 @@
         this._seconds = 0;
         this.currentDate = new Date();
         this.lunchingDate = lunchingDate;
-        this.counter = null;
-        this._onSecondPassed = [];
-        this._onMinutePassed = [];
-        this._onHourPassed = [];
-        this._onDaysPassed = [];
+        this.elapsesTime = 0;
+        this.upperNumberLayerSeconds = $('.seconds__container .number__layer.upper .layer[data-flipper]');
+        this.bottomNumberLayerSeconds = $('.seconds__container .number__layer.bottom .layer[data-flipper]');
+        this.upperNumberLayerMinutes = $('.minutes__container .number__layer.upper .layer[data-flipper]');
+        this.bottomNumberLayerMinutes = $('.minutes__container .number__layer.bottom .layer[data-flipper]');
+        this.upperNumberLayerHours = $('.hours__container .number__layer.upper .layer[data-flipper]');
+        this.bottomNumberLayerHours = $('.hours__container .number__layer.bottom .layer[data-flipper]');
+        this.upperNumberLayerDays = $('.days__container .number__layer.upper .layer[data-flipper]');
+        this.bottomNumberLayerDays = $('.days__container .number__layer.bottom .layer[data-flipper]');
+
+
       }
-      set onSecond(callback) {
-        this._onSecondPassed.push(callback);
-      }
-      set onMinute(callback) {
-        this._onMinutePassed.push(callback);
-      }
-      set onHour(callback) {
-        this._onHourPassed.push(callback);
-      }
-      set onDay(callback) {
-        this._onDaysPassed.push(callback);
-      }
+
       get days() {
         return Math.floor(this._days);
       }
@@ -521,116 +516,111 @@
           1- with every bottom animation ended trigger on second passed so can minutes track if seconds passed so 
 
         */
-        this.renderDaysContainer();
-        this.renderHoursContainer();
-        this.renderMinutesContainer();
-        this.renderSecondsContainer();
 
-      }
-      renderSecondsContainer() {
-        const upperNumberLayer = $('.seconds__container .number__layer.upper .layer[data-flipper]');
-        const bottomNumberLayer = $('.seconds__container .number__layer.bottom .layer[data-flipper]');
-        $(upperNumberLayer).find('.time').text(this.seconds);
-        $(bottomNumberLayer).find('.time').text(this.seconds);
-        upperNumberLayer.on('animationstart', (evt) => {
+        $(this.upperNumberLayerSeconds).find('.time').text(this.seconds);
+        $(this.bottomNumberLayerSeconds).find('.time').text(this.seconds);
+        this.upperNumberLayerSeconds.on('animationstart', (evt) => {
 
           this.updateTime();
           $(evt.target).prev('span').find('.time').text(this.seconds);
         });
-        upperNumberLayer.on('animationend', (evt) => {
+        this.upperNumberLayerSeconds.on('animationend', (evt) => {
           $(evt.target).find('.time').text(this.seconds);
           evt.target.classList.remove('flipAnimation');
-          bottomNumberLayer.addClass('flipAnimation');
+          this.bottomNumberLayerSeconds.addClass('flipAnimation');
         });
-        bottomNumberLayer.on('animationstart', (evt) => {
+        this.bottomNumberLayerSeconds.on('animationstart', (evt) => {
           $(evt.target).find('.time').text(this.seconds);
         });
-        bottomNumberLayer.on('animationend', (evt) => {
-          $(evt.target).prev('span').find('.time').text(this.seconds);
+        this.bottomNumberLayerSeconds.on('animationend', (evt) => {
+          // continue to update and reload animation if value changed only 
+          // here made check every second if any of timer containers changed set animation class then remove it
+
           evt.target.classList.remove('flipAnimation');
-          upperNumberLayer.addClass('flipAnimation');
-          this._onSecondPassed.forEach(callback => callback());
+          const timeElement = $(evt.target).prev('span').find('.time')[0];
+          if (Number(timeElement.textContent) != this.seconds) {
+            timeElement.textContent = this.seconds;
+            this.upperNumberLayerSeconds.addClass('flipAnimation');
+          }
+          const timeMinutesElement = this.upperNumberLayerMinutes.prev('span').find('.time')[0];
+          if (Number(timeMinutesElement.textContent) != this.minutes) {
+            timeMinutesElement.textContent = this.minutes;
+            this.upperNumberLayerMinutes.addClass('flipAnimation');
+          }
+          const timeHoursElement = this.upperNumberLayerHours.prev('span').find('.time')[0];
+          if (Number(timeHoursElement.textContent) != this.hours) {
+            timeHoursElement.textContent = this.hours;
+            this.upperNumberLayerHours.addClass('flipAnimation');
+          }
+          const timeDaysElement = this.upperNumberLayerDays.prev('span').find('.time')[0];
+          if (Number(timeDaysElement.textContent) != this.days) {
+            timeDaysElement.textContent = this.days;
+            this.upperNumberLayerDays.addClass('flipAnimation');
+          }
+
         });
-      }
-      renderMinutesContainer() {
-        const upperNumberLayerMinutes = $('.minutes__container .number__layer.upper .layer[data-flipper]');
-        const bottomNumberLayerMinutes = $('.minutes__container .number__layer.bottom .layer[data-flipper]');
-        this.onSecond = () => {
-          if (this.seconds <= 0) upperNumberLayerMinutes.addClass('flipAnimation');
-        }
-        $(upperNumberLayerMinutes).find('.time').text(this.minutes);
-        $(bottomNumberLayerMinutes).find('.time').text(this.minutes);
-        upperNumberLayerMinutes.on('animationstart', (evt) => {
+
+
+        $(this.upperNumberLayerMinutes).find('.time').text(this.minutes);
+        $(this.bottomNumberLayerMinutes).find('.time').text(this.minutes);
+        this.upperNumberLayerMinutes.on('animationstart', (evt) => {
           this.updateTime();
           $(evt.target).prev('span').find('.time').text(this.minutes);
         });
-        upperNumberLayerMinutes.on('animationend', (evt) => {
+        this.upperNumberLayerMinutes.on('animationend', (evt) => {
           $(evt.target).find('.time').text(this.minutes);
           evt.target.classList.remove('flipAnimation');
-          bottomNumberLayerMinutes.addClass('flipAnimation');
+          this.bottomNumberLayerMinutes.addClass('flipAnimation');
         });
-        bottomNumberLayerMinutes.on('animationstart', (evt) => {
+        this.bottomNumberLayerMinutes.on('animationstart', (evt) => {
           $(evt.target).find('.time').text(this.minutes);
         });
-        bottomNumberLayerMinutes.on('animationend', (evt) => {
-          $(evt.target).prev('span').find('.time').text(this.minutes);
+        this.bottomNumberLayerMinutes.on('animationend', (evt) => {
           evt.target.classList.remove('flipAnimation');
-          this._onMinutePassed.forEach(callback => callback());
         });
-      }
-      renderHoursContainer() {
-        const upperNumberLayerHours = $('.hours__container .number__layer.upper .layer[data-flipper]');
-        const bottomNumberLayerHours = $('.hours__container .number__layer.bottom .layer[data-flipper]');
-        this.onMinute = () => {
-          if (this.minutes < 0) upperNumberLayerHours.addClass('flipAnimation');
-        }
-        $(upperNumberLayerHours).find('.time').text(this.hours);
-        $(bottomNumberLayerHours).find('.time').text(this.hours);
-        upperNumberLayerHours.on('animationstart', (evt) => {
+
+
+
+        $(this.upperNumberLayerHours).find('.time').text(this.hours);
+        $(this.bottomNumberLayerHours).find('.time').text(this.hours);
+        this.upperNumberLayerHours.on('animationstart', (evt) => {
           this.updateTime();
           $(evt.target).prev('span').find('.time').text(this.hours);
         });
-        upperNumberLayerHours.on('animationend', (evt) => {
+        this.upperNumberLayerHours.on('animationend', (evt) => {
           $(evt.target).find('.time').text(this.hours);
           evt.target.classList.remove('flipAnimation');
-          bottomNumberLayerHours.addClass('flipAnimation');
+          this.bottomNumberLayerHours.addClass('flipAnimation');
         });
-        bottomNumberLayerHours.on('animationstart', (evt) => {
+        this.bottomNumberLayerHours.on('animationstart', (evt) => {
           $(evt.target).find('.time').text(this.hours);
         });
-        bottomNumberLayerHours.on('animationend', (evt) => {
-          $(evt.target).prev('span').find('.time').text(this.hours);
+        this.bottomNumberLayerHours.on('animationend', (evt) => {
           evt.target.classList.remove('flipAnimation');
-          this._onHourPassed.forEach(callback => callback());
         });
-      }
-      renderDaysContainer() {
-        const upperNumberLayerDays = $('.days__container .number__layer.upper .layer[data-flipper]');
-        const bottomNumberLayerDays = $('.days__container .number__layer.bottom .layer[data-flipper]');
-        this.onHour = () => {
-          if (this.hours <= 0) upperNumberLayerDays.addClass('flipAnimation');
-        }
-        $(upperNumberLayerDays).find('.time').text(this.days);
-        $(bottomNumberLayerDays).find('.time').text(this.days);
-        upperNumberLayerDays.on('animationstart', (evt) => {
+
+
+        $(this.upperNumberLayerDays).find('.time').text(this.days);
+        $(this.bottomNumberLayerDays).find('.time').text(this.days);
+        this.upperNumberLayerDays.on('animationstart', (evt) => {
           this.updateTime();
           $(evt.target).prev('span').find('.time').text(this.days);
         });
-        upperNumberLayerDays.on('animationend', (evt) => {
+        this.upperNumberLayerDays.on('animationend', (evt) => {
           $(evt.target).find('.time').text(this.days);
           evt.target.classList.remove('flipAnimation');
-          bottomNumberLayerDays.addClass('flipAnimation');
+          this.bottomNumberLayerDays.addClass('flipAnimation');
         });
-        bottomNumberLayerDays.on('animationstart', (evt) => {
+        this.bottomNumberLayerDays.on('animationstart', (evt) => {
           $(evt.target).find('.time').text(this.days);
         });
-        bottomNumberLayerDays.on('animationend', (evt) => {
-          $(evt.target).prev('span').find('.time').text(this.days);
+        this.bottomNumberLayerDays.on('animationend', (evt) => {
           evt.target.classList.remove('flipAnimation');
-          this._onDaysPassed.forEach(callback => callback());
         });
 
       }
+
+
       stop() {
         clearInterval(this.counter);
       }
@@ -645,7 +635,9 @@
 
       }
 
-
+      isTimeFinished() {
+        return this.elapsesTime <= 0;
+      }
       getFullTime() {
         return `days:${this.days} hours:${this.hours} minuets:${this.minutes} seconds:${this.seconds}`;
       }
@@ -668,7 +660,7 @@
         console.log(this.getFullTime());
       }
     }
-    let countDown = new CountDown(new Date(2021, 1, 29, 14, 60, 0));
+    let countDown = new CountDown(new Date(2021, 2, 0, 0, 0, 0));
     countDown.start();
   </script>
 </body>
