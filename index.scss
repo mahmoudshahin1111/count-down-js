@@ -255,9 +255,24 @@ body {
     --timer-font-size: 40px;
     --timer-text-position: 55%;
   }
+  .page__body {
+    .title {
+ 
+      font-size: 5vw;
+      word-spacing: 0;
+      letter-spacing: 0;
+    }
+  }
+  .period__type{
+    
+
+    font-family: "Courier New", Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px !important;
+  }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
   :root {
     --box-timer-width: 60px;
     --box-timer-height: 140px;
@@ -271,5 +286,12 @@ body {
       word-spacing: 0;
       letter-spacing: 0;
     }
+  }
+  .period__type{
+    
+
+    font-family: "Courier New", Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px !important;
   }
 }
