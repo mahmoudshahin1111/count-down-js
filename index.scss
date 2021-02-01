@@ -1,0 +1,272 @@
+:root {
+  --color-primary: hsl(237, 18%, 59%);
+  --color-secondary: hsl(345, 95%, 68%);
+  --color-white: hsl(0, 0%, 100%);
+  --color-dark-blue-100: hsl(236, 21%, 26%);
+  --color-dark-blue-200: hsl(235, 16%, 14%);
+  --color-dark-blue-300: hsl(234, 17%, 12%);
+  --box-timer-width: 140px;
+  --box-timer-height: 200px;
+  --timer-font-size: 55px;
+  --timer-text-position: 55%;
+  --font-size:14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  font-size: var(--font-size);
+  font-family: "Red Hat Text";
+  font-weight: 700;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background: linear-gradient(
+    to top,
+    var(--color-dark-blue-100),
+    var(--color-dark-blue-200),
+    var(--color-dark-blue-300)
+  );
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-image: url("images/bg-stars.svg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  .page__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    z-index: 10;
+
+    .page__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: calc(10% - 2rem);
+      flex-grow: 1;
+
+      .title {
+        color: var(--color-white);
+        text-transform: uppercase;
+        word-spacing: 0.5rem;
+        letter-spacing: 0.5rem;
+      }
+
+      .timer__box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin-top: 75px;
+      }
+
+      .timer__period___box {
+        display: flex;
+        flex-direction: column;
+        background: transparent;
+        align-items: center;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 10px;
+        width: var(--box-timer-width);
+        height: var(--box-timer-height);
+      }
+
+      .number__container {
+        background-color: var(--color-dark-blue-300);
+        color: var(--color-secondary);
+        position: relative;
+        font-size: var(--timer-font-size);
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 20px;
+        padding: 1px 10px 5px 0;
+      }
+
+      .number__layers {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--color-dark-blue-100);
+        border-radius: 20px;
+      }
+
+      .number__layer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        &.upper {
+          top: 0;
+          filter: grayscale(0.2);
+          .layer {
+            transform-origin: bottom;
+            &.flipAnimation {
+              animation: 500ms linear flip ;
+            }
+
+            .time {
+              top: var(--timer-text-position);
+            }
+          }
+        }
+        &.bottom {
+          bottom: 0;
+          .layer {
+            transform-origin: top;
+            &.flipAnimation {
+              animation: 500ms linear flipBottom;
+            }
+            .time {
+              bottom: var(--timer-text-position);
+            }
+          }
+        }
+        .layer {
+          left: 0;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: var(--color-dark-blue-100);
+          overflow: hidden;
+          display: block;
+          border: 1px solid black;
+          transform: rotate3d(1, 0, 0, 10deg);
+        }
+        .layer {
+          &.flipAnimation {
+            z-index: 1;
+          }
+          .time {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+          }
+        }
+
+        /* Slitter */
+        .splitter {
+          width: 100%;
+          background-color: transparent;
+          height: 20px;
+          position: absolute;
+          top: 45%;
+          z-index: 10;
+          .divider {
+            width: 20px;
+            height: 20px;
+            background-color: var(--color-dark-blue-300);
+            border-radius: 50%;
+            display: inline-block;
+            &.left {
+              float: left;
+              margin-left: -10px;
+            }
+            &.right {
+              float: right;
+            }
+          }
+        }
+      }
+      .period__type {
+        color: var(--color-primary);
+        background: transparent;
+        font-size: 0.9rem;
+        font-family: "Courier New", Courier, monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.6rem;
+      }
+      /* End Splitter */
+
+      .social__media {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        width: 100%;
+        flex-grow: 1;
+        padding-bottom: 10px;
+      }
+
+      .social__media__links {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        justify-content: space-between;
+        width: 140px;
+      }
+    }
+  }
+  .pattern__hill {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+}
+
+@keyframes flip {
+  from {
+    transform: rotate3d(1, 0, 0, 10deg);
+  }
+
+  to {
+    transform: rotate3d(1, 0, 0, 90deg);
+  }
+}
+
+@keyframes flipBottom {
+  from {
+    transform: rotate3d(1, 0, 0, 90deg);
+  }
+
+  to {
+    transform: rotate3d(1, 0, 0, 10deg);
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  :root {
+    --box-timer-width: 100px;
+    --box-timer-height: 160px;
+    --timer-font-size: 40px;
+    --timer-text-position: 55%;
+  }
+  .page__body{
+      .title{
+        
+      }
+  }
+}
+
+
+@media only screen and (max-width: 400px) {
+    :root {
+      --box-timer-width: 60px;
+      --box-timer-height: 140px;
+      --timer-font-size: 20px;
+      --timer-text-position: 70%;
+    }
+  }
+  

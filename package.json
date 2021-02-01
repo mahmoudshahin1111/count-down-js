@@ -1,0 +1,5 @@
+{
+    "scripts": {
+        "serve":"sass index.scss index.css --watch"
+    }
+}
