@@ -9,7 +9,7 @@
   --box-timer-height: 200px;
   --timer-font-size: 55px;
   --timer-text-position: 55%;
-  --font-size:14px;
+  --font-size: 14px;
 }
 
 * {
@@ -58,10 +58,12 @@ body {
   /* End Splitter */
 }
 .page .page__content .page__body .title {
+  margin-top: 15vh;
   color: var(--color-white);
   text-transform: uppercase;
   word-spacing: 0.5rem;
   letter-spacing: 0.5rem;
+  text-align: center;
 }
 .page .page__content .page__body .timer__box {
   display: flex;
@@ -237,6 +239,12 @@ body {
     --box-timer-height: 140px;
     --timer-font-size: 20px;
     --timer-text-position: 70%;
+  }
+
+  .page__body .title {
+    font-size: 5vw;
+    word-spacing: 0;
+    letter-spacing: 0;
   }
 }
 
