@@ -192,5 +192,5 @@ class CountDown {
 /*
         Lunching
   */
-let countDown = new CountDown(new Date(2022, 10, 1));
+let countDown = new CountDown(new Date(2022, 22, 3));
 countDown.start();
